@@ -1,0 +1,22 @@
+File haarcascade_fullbody.xml trong YOLO v8 là một mô hình học máy được sử dụng để phát hiện cơ thể người trong các hình ảnh. Nó được tạo ra bằng cách đào tạo một bộ dữ liệu lớn các hình ảnh và nhãn cơ thể người.
+
+File haarcascade_fullbody.xml có thể được sử dụng để phát hiện cơ thể người trong thời gian thực. Để làm điều này, bạn cần tải mô hình vào một thư viện máy học như OpenCV. Sau đó, bạn có thể sử dụng thư viện này để phát hiện cơ thể người trong các hình ảnh hoặc video.
++
+Dưới đây là một số thông tin chi tiết về file haarcascade_fullbody.xml:
+
+Nó là một file văn bản được lưu trữ ở định dạng XML.
+Nó chứa thông tin về kiến trúc mạng nơ-ron của mô hình Haar Cascade.
+Nó chứa các trọng số được đào tạo của mô hình Haar Cascade.
+Để sử dụng file haarcascade_fullbody.xml để phát hiện cơ thể người, bạn có thể làm theo các bước sau:
+
+Tải mô hình vào một thư viện máy học.
+Tạo một đối tượng CascadeClassifier.
+Gửi hình ảnh hoặc video đầu vào cho mô hình.
+Nhận đầu ra của mô hình, bao gồm các hộp giới hạn của các cơ thể người được phát hiện.
+Đầu ra của chương trình Python này sẽ là một danh sách các hộp giới hạn của các cơ thể người được phát hiện. Các hộp giới hạn được biểu thị dưới dạng các tọa độ (x, y, w, h), trong đó (x, y) là góc trên bên trái của hộp và (x + w, y + h) là góc dưới bên phải của hộp.
+
+Để biết thêm thông tin về cách sử dụng file haarcascade_fullbody.xml, vui lòng tham khảo tài liệu của thư viện máy học mà bạn đang sử dụng.
+
+Trong YOLO v8, file haarcascade_fullbody.xml được sử dụng để phát hiện cơ thể người trong các hình ảnh đầu vào. Sau đó, các hộp giới hạn của các cơ thể người được phát hiện được sử dụng để tinh chỉnh các hộp giới hạn của các đối tượng được phát hiện bởi mô hình YOLO. Điều này giúp cải thiện độ chính xác của việc phát hiện đối tượng.
+
+File haarcascade_fullbody.xml chỉ là một trong nhiều mô hình Haar Cascade có sẵn. Bạn có thể sử dụng các mô hình Haar Cascade khác để phát hiện các đối tượng khác, chẳng hạn như khuôn mặt, mắt, mũi, miệng, v.v.

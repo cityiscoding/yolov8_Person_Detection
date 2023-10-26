@@ -1,0 +1,20 @@
+
+frozen_inference_graph.pb
+
+File frozen_inference_graph.pb trong YOLO v8 là một mô hình học máy được đóng băng và tối ưu hóa để phát hiện đối tượng. Nó được tạo ra bằng cách đào tạo mô hình YOLO trên một tập dữ liệu lớn các hình ảnh và nhãn đối tượng. Sau khi đào tạo, mô hình được đóng băng để ngăn chặn quá trình học hỏi thêm và được tối ưu hóa để chạy nhanh hơn trên các thiết bị phần cứng khác nhau.
+
+File frozen_inference_graph.pb có thể được sử dụng để phát hiện đối tượng trong thời gian thực. Để làm điều này, bạn cần tải mô hình vào một thư viện máy học như TensorFlow hoặc PyTorch. Sau đó, bạn có thể sử dụng thư viện này để phát hiện đối tượng trong các hình ảnh hoặc video.
+
+Dưới đây là một số thông tin chi tiết về file frozen_inference_graph.pb:
+
+Nó là một file nhị phân được lưu trữ ở định dạng Protocol Buffers.
+Nó chứa thông tin về kiến trúc mạng nơ-ron của mô hình YOLO.
+Nó chứa các trọng số được đào tạo của mô hình YOLO.
+Nó được tối ưu hóa để chạy nhanh hơn trên các thiết bị phần cứng khác nhau.
+Để sử dụng file frozen_inference_graph.pb để phát hiện đối tượng, bạn có thể làm theo các bước sau:
+
+Tải mô hình vào một thư viện máy học.
+Tạo một đối tượng TensorFlowInferenceSession hoặc PyTorchInferenceSession.
+Gửi hình ảnh hoặc video đầu vào cho mô hình.
+Nhận đầu ra của mô hình, bao gồm các hộp giới hạn và nhãn đối tượng.
+Đầu ra của chương trình Python này sẽ là một danh sách các hộp giới hạn, điểm số và nhãn đối tượng. Các hộp giới hạn được biểu thị dưới dạng các tọa độ (x1, y1, x2, y2), trong đó (x1, y1) là góc trên bên trái của hộp và (x2, y2) là góc dưới bên phải của hộp. Điểm số cho biết khả năng của mô hình trong việc phát hiện đối tượng ở vị trí đó. Nhãn đối tượng cho biết tên của đối tượng được phát hiện.
