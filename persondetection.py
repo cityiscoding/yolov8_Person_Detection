@@ -24,20 +24,20 @@ class DetectorAPI:
         self.default_graph = self.detection_graph.as_default()
         self.sess = tf.Session(graph=self.detection_graph)
 
-        # Definite input and output Tensors for detection_graph
+        # Xác định input và output Tensors cho detection_graph
         self.image_tensor = self.detection_graph.get_tensor_by_name('image_tensor:0')
-        # Each box represents a part of the image where a particular object was detected.
+        # Mỗi hộp đại diện cho một phần của ảnh nơi một đối tượng cụ thể đã được phát hiện.
         self.detection_boxes = self.detection_graph.get_tensor_by_name('detection_boxes:0')
-        # Each score represent how level of confidence for each of the objects.
-        # Score is shown on the result image, together with the class label.
+        # Mỗi điểm số đại diện cho mức độ tin cậy của mỗi đối tượng.
+        # Điểm số được hiển thị trên ảnh kết quả, cùng với nhãn lớp.
         self.detection_scores = self.detection_graph.get_tensor_by_name('detection_scores:0')
         self.detection_classes = self.detection_graph.get_tensor_by_name('detection_classes:0')
         self.num_detections = self.detection_graph.get_tensor_by_name('num_detections:0')
 
     def processFrame(self, image):
-        # Expand dimensions since the trained_model expects images to have shape: [1, None, None, 3]
+        # Mở rộng chiều vì mô hình huấn luyện mong đợi ảnh có hình dạng: [1, None, None, 3]
         image_np_expanded = np.expand_dims(image, axis=0)
-        # Actual detection.
+        # Phát hiện thực tế.
         start_time = time.time()
         (boxes, scores, classes, num) = self.sess.run(
             [self.detection_boxes, self.detection_scores,
@@ -45,13 +45,16 @@ class DetectorAPI:
             feed_dict={self.image_tensor: image_np_expanded})
         end_time = time.time()
 
-        # print("Elapsed Time:", end_time-start_time)
-        # print(self.image_tensor, image_np_expanded)
         im_height, im_width, _ = image.shape
         boxes_list = [None for i in range(boxes.shape[1])]
 
         for i in range(boxes.shape[1]):
-            boxes_list[i] = (int(boxes[0, i, 0] * im_height),int(boxes[0, i, 1]*im_width),int(boxes[0, i, 2] * im_height),int(boxes[0, i, 3]*im_width))
+            boxes_list[i] = (
+                int(boxes[0, i, 0] * im_height),
+                int(boxes[0, i, 1] * im_width),
+                int(boxes[0, i, 2] * im_height),
+                int(boxes[0, i, 3] * im_width)
+            )
 
         return boxes_list, scores[0].tolist(), [int(x) for x in classes[0].tolist()], int(num[0])
 

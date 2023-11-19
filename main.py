@@ -299,7 +299,12 @@ if exit1==False:
             filename2 = filedialog.askopenfilename(title="Select Video file", parent=windowv)
             path_text2.delete("1.0", "end")
             path_text2.insert(END, filename2)
-
+        # Thêm một nhãn để hiển thị số lượng người
+        person_count_label = tk.Label(windowv, font=("Arial", 30), fg="blue")
+        person_count_label.place(x=100, y=490)
+        # Hàm để cập nhật số lượng người trên nhãn
+        def update_person_count_label(count):
+            person_count_label.config(text="Số người được phát hiện: " + str(count))
         # function defined to detect inside the video
         def det_vid():
             global filename2, max_count2, framex2, county2, max2, avg_acc2_list, max_avg_acc2_list, max_acc2, max_avg_acc2
@@ -326,10 +331,15 @@ if exit1==False:
             if args['output'] is not None:
                 writer = cv2.VideoWriter(args['output'], cv2.VideoWriter_fourcc(*'MJPG'), 10, (600, 600))
 
-            detectByPathVideo(video_path, writer)
+            detectByPathVideo(video_path, writer,update_person_count_label)
 
         # the main process of detection in video takes place here
-        def detectByPathVideo(path, writer):
+        # Hàm detectByPathVideo
+        # Hàm detectByPathVideo
+        # ...
+        # ...
+        # Hàm detectByPathVideo
+        def detectByPathVideo(path, writer, update_label_function):
             global filename2, max_count2, framex2, county2, max2, avg_acc2_list, max_avg_acc2_list, max_acc2, max_avg_acc2
             max_count2 = 0
             framex2 = []
@@ -339,6 +349,77 @@ if exit1==False:
             max_avg_acc2_list = []
             max_acc2 = 0
             max_avg_acc2 = 0
+
+            video = cv2.VideoCapture(path)
+            odapi = DetectorAPI()
+            threshold = 0.7
+
+            check, frame = video.read()
+            if check == False:
+                print('Video Not Found. Please Enter a Valid Path (Full path of Video Should be Provided).')
+                return
+
+            x2 = 0
+            person_count = 0  # Tạo biến để theo dõi số người đã phát hiện được
+            while check:  # Thay đổi điều kiện kiểm tra
+                img = cv2.resize(frame, (800, 500))
+                boxes, scores, classes, num = odapi.processFrame(img)
+                person = 0
+                acc = 0
+                for i in range(len(boxes)):
+                    if classes[i] == 1 and scores[i] > threshold:
+                        box = boxes[i]
+                        person += 1
+                        cv2.rectangle(img, (box[1], box[0]), (box[3], box[2]), (255, 0, 0), 2)
+                        cv2.putText(img, f'P{person, round(scores[i], 2)}', (box[1] - 30, box[0] - 8),
+                                    cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 0, 255), 1)
+                        acc += scores[i]
+                        if scores[i] > max_acc2:
+                            max_acc2 = scores[i]
+
+                if person > max_count2:
+                    max_count2 = person
+                county2.append(person)
+                x2 += 1
+                framex2.append(x2)
+                if person >= 1:
+                    avg_acc2_list.append(acc / person)
+                    if (acc / person) > max_avg_acc2:
+                        max_avg_acc2 = (acc / person)
+                else:
+                    avg_acc2_list.append(acc)
+
+                if writer is not None:
+                    writer.write(img)
+
+                cv2.imshow("Human Detection from Video", img)
+                update_label_function(person)  # Cập nhật nhãn số người
+                person_count += person  # Cập nhật số người đã phát hiện được
+
+                key = cv2.waitKey(1)
+                if key & 0xFF == ord('q'):
+                    break
+
+                check, frame = video.read()  # Đọc frame tiếp theo
+
+                print(f"Number of persons detected in this frame: {person}")
+
+            video.release()
+            info1.config(text="Status : Detection & Counting Completed")
+            cv2.destroyAllWindows()
+
+            for i in range(len(framex2)):
+                max2.append(max_count2)
+                max_avg_acc2_list.append(max_avg_acc2)
+
+            # Đặt điều kiện tắt vòng lặp
+            if not check:
+                print("Video playback completed.")
+                # print("Số người đã phát hiện được:", person_count)
+
+            # Cập nhật nhãn số người
+            update_label_function(person_count)
+
 
             # function defined to plot the people detected in video
             def vid_enumeration_plot():
