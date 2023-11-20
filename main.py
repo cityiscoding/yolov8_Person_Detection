@@ -332,13 +332,6 @@ if exit1==False:
                 writer = cv2.VideoWriter(args['output'], cv2.VideoWriter_fourcc(*'MJPG'), 10, (600, 600))
 
             detectByPathVideo(video_path, writer,update_person_count_label)
-
-        # the main process of detection in video takes place here
-        # Hàm detectByPathVideo
-        # Hàm detectByPathVideo
-        # ...
-        # ...
-        # Hàm detectByPathVideo
         def detectByPathVideo(path, writer, update_label_function):
             global filename2, max_count2, framex2, county2, max2, avg_acc2_list, max_avg_acc2_list, max_acc2, max_avg_acc2
             max_count2 = 0
@@ -349,6 +342,10 @@ if exit1==False:
             max_avg_acc2_list = []
             max_acc2 = 0
             max_avg_acc2 = 0
+            font = cv2.FONT_HERSHEY_SIMPLEX
+            font_scale = 0.5
+            font_thickness = 1
+
 
             video = cv2.VideoCapture(path)
             odapi = DetectorAPI()
@@ -376,6 +373,8 @@ if exit1==False:
                         acc += scores[i]
                         if scores[i] > max_acc2:
                             max_acc2 = scores[i]
+                            # Thêm dòng sau khi vẽ hộp giới hạn để hiển thị số người
+                    # cv2.putText(img, f'Person: {person}', (10, 20), font, font_scale, (0, 255, 0), font_thickness)
 
                 if person > max_count2:
                     max_count2 = person
@@ -415,11 +414,9 @@ if exit1==False:
             # Đặt điều kiện tắt vòng lặp
             if not check:
                 print("Video playback completed.")
-                # print("Số người đã phát hiện được:", person_count)
+                
 
-            # Cập nhật nhãn số người
-            update_label_function(person_count)
-
+                
 
             # function defined to plot the people detected in video
             def vid_enumeration_plot():
